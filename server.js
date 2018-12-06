@@ -23,9 +23,7 @@ const ratesInstance = require('./libs/rates');
 const transactionsInstance = require('./libs/transactions');
 ratesInstance.baseCurrency = convertCurrency;
 
-let result = [];
 let transactions = [];
-
 
 for(let i = 0; i < transactionCount; i++) {
 	transactions.push(transactionsInstance.getTransactions());
@@ -53,7 +51,6 @@ BPromise.all(transactions).then((transactionsData) => {
 	});
 
 	Promise.all(rates).then((ratesData) => {
-
 		if(!_.isArray(ratesData) || _.isEmpty(ratesData)) {
 			return;
 		}
@@ -77,7 +74,8 @@ BPromise.all(transactions).then((transactionsData) => {
 
 			convertedResults.push({
 				createdAt: transaction.createdAt,
-				currency: convertCurrency,
+				amount: transaction.amount,
+				currency: transaction.currency,
 				convertedAmount: parseFloat(convertedAmount),
 				checksum: transaction.checksum
 			});
